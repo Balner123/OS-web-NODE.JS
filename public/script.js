@@ -17,7 +17,13 @@ function nactiPrispevky() {
 // Funkce pro odeslání nového příspěvku
 document.getElementById('prispevek-form').addEventListener('submit', function (event) {
     event.preventDefault();
-    const prispevekText = document.getElementById('prispevek-text').value;
+    const prispevekText = document.getElementById('prispevek-text').value.trim(); // trim odstraní bílé znaky
+
+    // Kontrola, zda je text prázdný
+    if (!prispevekText) {
+        alert('Nelze odeslat prázdný příspěvek.');
+        return;
+    }
 
     fetch('/add', {
         method: 'POST',
