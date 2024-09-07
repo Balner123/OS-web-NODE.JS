@@ -1,7 +1,7 @@
 /* Globální styly */
 body {
     font-family: 'Arial', sans-serif;
-    background-color: #000000; /* Barva pozadí za main */
+    background-color: #d61b1b; /* Barva pozadí za main */
     margin: 0;
     padding: 0;
     display: flex;
@@ -32,8 +32,8 @@ main.container {
     margin: 0 auto;           /* Vystředí element horizontálně */
     padding: 20px;            /* Přidá vnitřní odsazení */
     background-color: #ffffff; /* Barva pozadí pro main */
-    border-radius: 8px;       /* Volitelné zaoblení rohů */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Volitelný stín */
+    border-radius: 4px;       /* Volitelné zaoblení rohů */
+    box-shadow: 4px 4px 4px 4px rgba(0, 0, 0, 0.1); /* Volitelný stín */
 }
 
 /* Styl pro seznam příspěvků */
@@ -109,11 +109,6 @@ button:hover {
     transition: background-color 0.3s ease, border-color 0.3s ease;
 }
 
-.prechod:hover {
-    background-color: #dddddd;
-    border-color: #ff0000; 
-}
-
 /* Styl pro patičku */
 footer {
     margin-top: 30px;
@@ -149,4 +144,33 @@ footer {
         font-size: 14px;
         padding: 10px;
     }
+}
+body{
+    background-color: #0056b3;
+}
+
+
+/* Styl pro jednotlivé karty */
+.post-card {
+    background-color: #ffffff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin: 15px 0;
+    padding: 15px;
+    width: 100%;
+}
+
+/* Styl pro záhlaví karty (datum) */
+.post-card-header {
+    font-size: 14px;
+    color: #888;
+    margin-bottom: 10px;
+    background-color: #ffffff;
+}
+
+/* Styl pro obsah karty (text příspěvku) */
+.post-card-content {
+    font-size: 16px;
+    color: #333;
 }

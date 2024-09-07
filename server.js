@@ -1,54 +1,50 @@
 const express = require('express');
-const bodyParser = require('body-parser');
 const fs = require('fs');
+const path = require('path');
+
 const app = express();
-const port = 3000;
+const PORT = 3000;
 
-// Middleware pro zpracování dat z formuláře
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(bodyParser.json());
+// Middleware
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(express.static(path.join(__dirname, 'public')));
 
-// Statická složka pro HTML, CSS a JavaScript
-app.use(express.static('public'));
-
-// API pro získání příspěvků
-app.get('/prispevky', (req, res) => {
-    fs.readFile('prispevky.json', (err, data) => {
+// Route to get posts
+app.get('/posts', (req, res) => {
+    fs.readFile(path.join(__dirname, 'prispevky.json'), 'utf8', (err, data) => {
         if (err) {
-            return res.status(500).send("Chyba při načítání příspěvků.");
+            console.error(err);
+            return res.status(500).send('Error reading posts');
         }
-        const prispevky = JSON.parse(data);
-        res.json(prispevky);
+        res.json(JSON.parse(data));
     });
 });
 
-// API pro přidání nového příspěvku
-app.post('/add', (req, res) => {
-    const newPrispevek = req.body.prispevek;
+// Route to add a post
+app.post('/posts', (req, res) => {
+    const newPost = {
+        time: new Date().toISOString(), // Current timestamp
+        text: req.body.text
+    };
 
-    // Načtení existujících příspěvků
-    fs.readFile('prispevky.json', (err, data) => {
-        if (err) {
-            return res.status(500).send("Chyba při načítání příspěvků.");
+    fs.readFile(path.join(__dirname, 'prispevky.json'), 'utf8', (err, data) => {
+        let posts = [];
+        if (!err && data) {
+            posts = JSON.parse(data);
         }
+        posts.push(newPost);
 
-        const prispevky = JSON.parse(data);
-
-        // Přidání nového příspěvku
-        prispevky.push(newPrispevek);
-
-        // Zápis zpět do souboru
-        fs.writeFile('prispevky.json', JSON.stringify(prispevky), (err) => {
+        fs.writeFile(path.join(__dirname, 'prispevky.json'), JSON.stringify(posts, null, 2), 'utf8', (err) => {
             if (err) {
-                return res.status(500).send("Chyba při ukládání příspěvku.");
+                console.error(err);
+                return res.status(500).send('Error saving post');
             }
-
-            res.status(200).json({ message: "Příspěvek uložen." });
+            res.status(201).send('Post saved');
         });
     });
 });
 
-// Spuštění serveru
-app.listen(port, () => {
-    console.log(`Server běží na http://localhost:${port}`);
+app.listen(PORT, () => {
+    console.log(`Server is running on http://localhost:${PORT}`);
 });

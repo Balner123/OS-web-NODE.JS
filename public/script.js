@@ -1,45 +1,54 @@
-// Funkce pro načtení příspěvků
-function nactiPrispevky() {
-    fetch('/prispevky')
-        .then(response => response.json())
-        .then(prispevky => {
-            const prispevkyList = document.getElementById('prispevky-list');
-            prispevkyList.innerHTML = '';  // Vyprázdnit seznam
-            prispevky.forEach(prispevek => {
-                const li = document.createElement('li');
-                li.textContent = prispevek;
-                prispevkyList.appendChild(li);
+document.addEventListener('DOMContentLoaded', () => {
+    const form = document.getElementById('prispevek-form');
+    const textArea = document.getElementById('prispevek-text');
+    const list = document.getElementById('prispevky-list');
+
+    // Function to replace newline characters with <br> tags
+    const formatText = (text) => {
+        return text.replace(/\n/g, '<br>');
+    };
+
+    // Function to fetch and display posts
+    const loadPosts = async () => {
+        try {
+            const response = await fetch('/posts');
+            const posts = await response.json();
+            list.innerHTML = posts.map(post => 
+                `<div class="post-card">
+                    <div class="post-card-header">${new Date(post.time).toLocaleString()}</div>
+                    <div class="post-card-content">${formatText(post.text)}</div>
+                </div>`
+            ).join('');
+        } catch (error) {
+            console.error('Error fetching posts:', error);
+        }
+    };
+
+    // Load posts on page load
+    loadPosts();
+
+    // Handle form submission
+    form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        const text = textArea.value.trim();
+        if (!text) {
+            alert('Příspěvek nemůže být prázdný!');
+            return;
+        }
+
+        try {
+            await fetch('/posts', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ text })
             });
-        })
-        .catch(error => console.error('Chyba při načítání příspěvků:', error));
-}
-
-// Funkce pro odeslání nového příspěvku
-document.getElementById('prispevek-form').addEventListener('submit', function (event) {
-    event.preventDefault();
-    const prispevekText = document.getElementById('prispevek-text').value.trim(); // trim odstraní bílé znaky
-
-    // Kontrola, zda je text prázdný
-    if (!prispevekText) {
-        alert('Nelze odeslat prázdný příspěvek.');
-        return;
-    }
-
-    fetch('/add', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ prispevek: prispevekText }),
-    })
-    .then(response => response.json())
-    .then(data => {
-        console.log(data.message);
-        nactiPrispevky();  // Načíst příspěvky po uložení
-        document.getElementById('prispevek-text').value = '';  // Vymazat textové pole
-    })
-    .catch(error => console.error('Chyba při ukládání příspěvku:', error));
+            textArea.value = ''; // Clear textarea
+            loadPosts(); // Reload posts
+        } catch (error) {
+            console.error('Error saving post:', error);
+        }
+    });
 });
-
-// Načíst příspěvky při načtení stránky
-nactiPrispevky();
