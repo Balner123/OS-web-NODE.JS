@@ -1,13 +1,14 @@
 /* Globální styly */
 body {
     font-family: 'Arial', sans-serif;
-    background-color: #d61b1b; /* Barva pozadí za main */
+    background-color: #000000; /* Barva pozadí za main */
     margin: 0;
     padding: 0;
     display: flex;
     flex-direction: column;
     align-items: center;
     min-height: 100vh;
+    /* Flexbox pro vertikální uspořádání */
 }
 
 /* Záhlaví - Nadpis */
@@ -28,12 +29,16 @@ h1 {
 
 /* Styl pro main */
 main.container {
-    width: 50%;               /* Nastaví šířku na 75 % stránky */
-    margin: 0 auto;           /* Vystředí element horizontálně */
-    padding: 20px;            /* Přidá vnitřní odsazení */
-    background-color: #ffffff; /* Barva pozadí pro main */
-    border-radius: 4px;       /* Volitelné zaoblení rohů */
-    box-shadow: 4px 4px 4px 4px rgba(0, 0, 0, 0.1); /* Volitelný stín */
+    width: 50%;  /* Nastaví šířku na 50 % stránky */
+    margin: 0 auto;  /* Vystředí element horizontálně */
+    padding: 20px;  /* Přidá vnitřní odsazení */
+    background-color: #ffffff;  /* Barva pozadí pro main */
+    border-radius: 4px;  /* Zaoblení rohů */
+    box-shadow: 4px 4px 4px 4px rgba(0, 0, 0, 0.1);  /* Stín */
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;  /* Tento element roste, aby zabíral volný prostor */
+    justify-content: space-between;  /* Rozloží obsah odshora dolů */
 }
 
 /* Styl pro seznam příspěvků */
@@ -44,7 +49,7 @@ ul {
 }
 
 ul li {
-    background-color: #f9f9f9;
+    background-color: #ffffff;
     margin: 10px 0;
     padding: 15px;
     border-radius: 4px;
@@ -53,12 +58,25 @@ ul li {
     color: #333;
 }
 
-/* Styl pro formulář */
+/* Styl pro formulář na pravém boku stránky */
 form {
-    margin-top: 20px;
-    width: 100%; /* Zajistíme, že formulář se roztáhne přes celou šířku */
+    position: absolute;
+    top: 50%;
+    right: 0;
+    transform: translateY(-50%); /* Vertikální vystředění formuláře */
+    width: 25%; /* Šířka formuláře na boku */
+    padding: 20px;
+    background-color: #ffffff; /* Barva pozadí formuláře */
+    border-left: 1px solid #ddd; /* Levý okraj pro oddělení od obsahu */
+    box-shadow: -2px 0 5px rgba(0, 0, 0, 0.1); /* Stín formuláře */
+    z-index: 10; /* Formulář bude nad obsahem */
+    height: 50%; /* Může být upraveno dle potřeby */
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* Vystředění obsahu formuláře */
 }
 
+/* Tlačítka a textová pole */
 textarea {
     width: 100%;
     height: 100px;
@@ -70,6 +88,7 @@ textarea {
     resize: none;
     outline: none;
     transition: border-color 0.3s ease;
+    margin-bottom: 10px; /* Odsazení spodní části pro prostor kolem */
 }
 
 textarea:focus {
@@ -85,7 +104,6 @@ button {
     border-radius: 4px;
     cursor: pointer;
     font-size: 16px;
-    margin-top: 10px;
     transition: background-color 0.3s ease;
 }
 
@@ -93,35 +111,52 @@ button:hover {
     background-color: #0056b3;
 }
 
-/* Styl pro přechodové tlačítko */
-.prechod {
-    position: absolute;
-    top: 10px;
-    left: 10px;
-    padding: 10px 20px;
-    background-color: #ffffff;
-    color: #000;
-    border: 2px solid #000;
-    border-radius: 5px;
-    cursor: pointer;
-    font-weight: bold;
+
+/* Tlačítko přechodu */
+a.btn {
+    display: inline-block;
+    padding: 12px 20px;
+    background-color: #014ea1;
+    color: #ffffff;
     text-align: center;
-    transition: background-color 0.3s ease, border-color 0.3s ease;
+    text-decoration: none;
+    border-radius: 4px;
+    font-size: 16px;
+    margin: 20px 0;
+    transition: background-color 0.3s ease;
 }
 
-/* Styl pro patičku */
-footer {
-    margin-top: 30px;
-    text-align: center;
-    padding: 20px;
-    border-top: 1px solid black;
+a.btn:hover {
+    background-color: #3798ff;
+}
+
+/* Styl pro jednotlivé karty */
+.post-card {
     background-color: #ffffff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin: 15px 0;
+    padding: 15px;
+    width: 100%;
+}
+
+/* Záhlaví karty (datum) */
+.post-card-header {
+    font-size: 14px;
+    color: #888;
+    margin-bottom: 10px;
+}
+
+/* Obsah karty (text příspěvku) */
+.post-card-content {
     font-size: 16px;
+    color: #333;
 }
 
 /* Responzivní styly pro mobilní zařízení */
 @media (max-width: 400px) {
-    .container {
+    main.container {
         width: 90%;
         padding: 10px;
     }
@@ -145,32 +180,8 @@ footer {
         padding: 10px;
     }
 }
+
 body{
-    background-color: #0056b3;
-}
-
-
-/* Styl pro jednotlivé karty */
-.post-card {
-    background-color: #ffffff;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    margin: 15px 0;
-    padding: 15px;
-    width: 100%;
-}
-
-/* Styl pro záhlaví karty (datum) */
-.post-card-header {
-    font-size: 14px;
-    color: #888;
-    margin-bottom: 10px;
-    background-color: #ffffff;
-}
-
-/* Styl pro obsah karty (text příspěvku) */
-.post-card-content {
-    font-size: 16px;
-    color: #333;
+    color: #000000;
+    background-color: #000000;
 }

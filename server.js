@@ -5,9 +5,11 @@ const path = require('path');
 const app = express();
 const PORT = 3000;
 
-// Middleware
+// Middleware pro práci s JSON a URL encoded daty
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+// Statické soubory z "public" složky
 app.use(express.static(path.join(__dirname, 'public')));
 
 // Route to get posts
@@ -45,6 +47,12 @@ app.post('/posts', (req, res) => {
     });
 });
 
+// Route to serve the about page at /about
+app.get('/about', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'about.html'));
+});
+
+// Nasloucháme na portu 3000
 app.listen(PORT, () => {
     console.log(`Server is running on http://localhost:${PORT}`);
 });
